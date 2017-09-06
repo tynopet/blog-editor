@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import MaterialIcon from 'react-google-material-icons';
 import { addPage, fetchPages } from '../../redux/actions/pages';
-import { Button, Container, PageLink as Link, LinksContailner, Title } from './styled';
+import { Button, Container, HomeLink, PageLink as Link, LinksContailner, ListItem, Title } from './styled';
 
 class Sidebar extends Component {
   componentDidMount() {
@@ -10,17 +11,18 @@ class Sidebar extends Component {
   }
 
   render() {
-    console.log(this.props.pages);
     return (
       <Container>
-        <Link to="/">Главная</Link>
+        <HomeLink to="/">Главная</HomeLink>
         <Title>Существующие страницы:</Title>
         <LinksContailner>
           {this.props.pages.map(({ id, title }) => (
-            <li key={id}>
+            <ListItem key={id}>
               <Link to={`/pages/${id}`}>{title}</Link>
-              <Link to={`/edit/${id}`}>🖌</Link>
-            </li>
+              <Link to={`/edit/${id}`}>
+                <MaterialIcon icon="edit" size={18} />
+              </Link>
+            </ListItem>
           ))}
         </LinksContailner>
         <Button onClick={this.props.addPage}>Добавить</Button>

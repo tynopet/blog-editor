@@ -39,6 +39,7 @@ export const FloatButton = styled.button`
   border: none;
   border-radius: 50%;
   color: #fff;
+  cursor: pointer;
   width: 50px;
   height: 50px;
 

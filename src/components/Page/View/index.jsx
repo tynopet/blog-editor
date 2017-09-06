@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import DOMPurify from 'dompurify';
 import { Block, Container } from '../styled';
 import { Title } from './styled';
 
@@ -8,7 +9,7 @@ const Page = ({ blocks, title }) => (
   <Container>
     <Title>{title}</Title>
     {blocks.map(({ id, content }) => (
-      <Block key={id} dangerouslySetInnerHTML={{ __html: content }} />
+      <Block key={id} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} />
     ))}
   </Container>
 );

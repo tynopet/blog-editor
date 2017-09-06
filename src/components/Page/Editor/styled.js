@@ -5,9 +5,22 @@ export const CloseButton = styled.button`
   border: none;
   cursor: pointer;
 
+  padding: 0px;
+
   position: absolute;
   right: 10px;
   top: 10px;
+`;
+
+export const Input = styled.input`
+  height: 30px;
+  border-width: 0 0 1px 0;
+  margin: 20px;
+
+  &:focus {
+    outline: none;
+    border-color: #3f51b5;
+  }
 `;
 
 export const OrderButton = styled.button`

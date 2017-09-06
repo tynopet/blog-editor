@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import MaterialIcon from 'react-google-material-icons';
+import DOMPurify from 'dompurify';
 import { savePage, deletePage } from '../../../redux/actions/pages';
 import { Block, Container } from '../styled';
-import { CloseButton, FloatButton, OrderButton } from './styled';
+import { CloseButton, FloatButton, Input, OrderButton } from './styled';
 import Popup from './Popup';
 
 class Editor extends Component {
@@ -140,32 +142,37 @@ class Editor extends Component {
   render() {
     return (
       <Container>
-        <input type="text" value={this.state.title} onChange={this.handleTitleChange} />
+        <Input
+          type="text"
+          placeholder="Название страницы"
+          value={this.state.title}
+          onChange={this.handleTitleChange}
+        />
         {this.state.blocks.sort((a, b) => a.order - b.order).map(({ id, content }) => (
           <Block
             key={id}
             onClick={() => this.handleBlockClick(id)}
           >
             <CloseButton onClick={e => this.handleRemoveBlock(e, id)}>
-              <span role="img" aria-label="remove">❌</span>
+              <MaterialIcon icon="clear" title="Удалить блок" size={18} />
             </CloseButton>
-            <p dangerouslySetInnerHTML={{ __html: content }} />
+            <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} />
             <OrderButton bottom="30px" onClick={e => this.handleOrderClick(e, id, true)}>
-              <span role="img" aria-label="up">🔺</span>
+              <MaterialIcon icon="keyboard_arrow_up" title="Переместить вверх" size={18} />
             </OrderButton>
             <OrderButton bottom="10px" onClick={e => this.handleOrderClick(e, id, false)}>
-              <span role="img" aria-label="down">🔻</span>
+              <MaterialIcon icon="keyboard_arrow_down" title="Переместить вниз" size={18} />
             </OrderButton>
           </Block>
         ))}
-        <FloatButton right="15px" onClick={this.handleDelete}>
-          <span role="img" aria-label="close">❌</span>
+        <FloatButton right="15px" onClick={this.handleDelete} title="Удалить страницу">
+          <MaterialIcon icon="delete" size={18} />
         </FloatButton>
-        <FloatButton right="75px" onClick={this.handleSave}>
-          <span role="img" aria-label="save">✅</span>
+        <FloatButton right="75px" onClick={this.handleSave} title="Сохранить страницу">
+          <MaterialIcon icon="save" size={18} />
         </FloatButton>
-        <FloatButton right="150px" onClick={this.handleAddBlock}>
-          <span role="img" aria-label="save">📦</span>
+        <FloatButton right="150px" onClick={this.handleAddBlock} title="Добавить блок">
+          <MaterialIcon icon="note_add" size={18} />
         </FloatButton>
         {this.state.popupIsOpen
           && <Popup

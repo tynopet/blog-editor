@@ -47,10 +47,3 @@ export const ModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-export const SaveButton = styled.button`
-  border: none;
-  background-color: #3f51b5;
-  color: #fff;
-  padding: 10px;
-`;

@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import MaterialIcon from 'react-google-material-icons';
-import { Editor, ModalContainer, ModalMask, ModalWrapper, SaveButton } from './styled';
+import { Button } from '../../../Sidebar/styled';
+import { Editor, ModalContainer, ModalMask, ModalWrapper } from './styled';
 import { CloseButton } from './../styled';
 
 const Popup = ({ block, changeCallback, closeCallback, saveCallback }) => (
@@ -15,7 +16,7 @@ const Popup = ({ block, changeCallback, closeCallback, saveCallback }) => (
         <ReactQuill theme="snow" value={block.content} onChange={changeCallback}>
           <Editor />
         </ReactQuill>
-        <SaveButton onClick={saveCallback}>Сохранить</SaveButton>
+        <Button onClick={saveCallback}>Сохранить</Button>
       </ModalContainer>
     </ModalWrapper>
   </ModalMask>

@@ -10,6 +10,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-google-material-icons": "^1.0.3",
+    "react-notify-toast": "^0.3.2",
     "react-quill": "v1.0.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",

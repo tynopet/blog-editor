@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-google-material-icons';
 import DOMPurify from 'dompurify';
+import Notifications, { notify } from 'react-notify-toast';
 import { savePage, deletePage } from '../../../redux/actions/pages';
 import { Block, Container } from '../styled';
 import { CloseButton, FloatButton, Input, OrderButton } from './styled';
@@ -48,7 +49,12 @@ class Editor extends Component {
   }
 
   handleSave() {
-    this.props.save(this.state);
+    this.props.save(this.state)
+      .then(() => notify.show('Сохранено', 'success', 2000))
+      .catch((e) => {
+        notify.show('Не удалось сохранить страницу, попробуйте позже', 'error', 2000);
+        console.error(e);
+      });
   }
 
   handleDelete() {
@@ -174,6 +180,7 @@ class Editor extends Component {
         <FloatButton right="150px" onClick={this.handleAddBlock} title="Добавить блок">
           <MaterialIcon icon="note_add" size={18} />
         </FloatButton>
+        <Notifications />
         {this.state.popupIsOpen
           && <Popup
             saveCallback={this.saveCallback}

@@ -49,12 +49,8 @@ class Editor extends Component {
   }
 
   handleSave() {
-    this.props.save(this.state)
-      .then(() => notify.show('Сохранено', 'success', 2000))
-      .catch((e) => {
-        notify.show('Не удалось сохранить страницу, попробуйте позже', 'error', 2000);
-        console.error(e);
-      });
+    this.props.save(this.state);
+    notify.show('Сохранено', 'success', 2000);
   }
 
   handleDelete() {

@@ -39,7 +39,8 @@ export const fetchPages = () => (dispatch) => {
     .catch(e => console.error(e));
 };
 
-export const savePage = page => dispatch =>
+export const savePage = page => (dispatch) => {
   save(page)
     .then(() => dispatch(pageIsSaved(page)))
     .catch(e => e);
+};

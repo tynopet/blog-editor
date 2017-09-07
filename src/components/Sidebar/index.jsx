@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import MaterialIcon from 'react-google-material-icons';
+// import MaterialIcon from 'react-google-material-icons';
 import { addPage, fetchPages } from '../../redux/actions/pages';
 import { Button, Container, HomeLink, PageLink as Link, LinksContailner, ListItem, Title } from './styled';
 
@@ -19,9 +19,9 @@ class Sidebar extends Component {
           {this.props.pages.map(({ id, title }) => (
             <ListItem key={id}>
               <Link to={`/pages/${id}`}>{title}</Link>
-              <Link to={`/edit/${id}`}>
+              {/* <Link to={`/edit/${id}`}>
                 <MaterialIcon icon="edit" size={18} />
-              </Link>
+              </Link> */}
             </ListItem>
           ))}
         </LinksContailner>

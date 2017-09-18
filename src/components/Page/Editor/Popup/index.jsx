@@ -1,12 +1,25 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import MaterialIcon from 'react-google-material-icons';
 import { Button } from '../../../Sidebar/styled';
 import { Editor, ModalContainer, ModalMask, ModalWrapper } from './styled';
 import { CloseButton } from './../styled';
 
-const Popup = ({ block, changeCallback, closeCallback, saveCallback }) => (
+type Props = {
+  block: {
+    id: number,
+    order: number,
+    content: string,
+  };
+  changeCallback: Function;
+  closeCallback: Function;
+  saveCallback: Function;
+}
+
+const Popup = ({ block, changeCallback, closeCallback, saveCallback }: Props) => (
   <ModalMask>
     <ModalWrapper>
       <CloseButton onClick={closeCallback}>
@@ -22,11 +35,11 @@ const Popup = ({ block, changeCallback, closeCallback, saveCallback }) => (
   </ModalMask>
 );
 
-Popup.propTypes = {
-  block: PropTypes.shape().isRequired,
-  changeCallback: PropTypes.func.isRequired,
-  closeCallback: PropTypes.func.isRequired,
-  saveCallback: PropTypes.func.isRequired,
-};
+// Popup.propTypes = {
+//   block: PropTypes.shape().isRequired,
+//   changeCallback: PropTypes.func.isRequired,
+//   closeCallback: PropTypes.func.isRequired,
+//   saveCallback: PropTypes.func.isRequired,
+// };
 
 export default Popup;

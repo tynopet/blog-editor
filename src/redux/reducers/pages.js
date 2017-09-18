@@ -1,29 +1,31 @@
+// @flow
 import { ADD_PAGE, DELETE_PAGE, FETCH_PAGES, SAVE_PAGE } from '../constants';
+import type { Page, Pages } from '../../types/State';
+import type { Action } from '../../types/Action';
 
 const defaultState = {
   pages: [],
 };
 
-const pages = (state = defaultState, action) => {
+const pages = (state: Pages = defaultState, action: Action): Pages => {
   switch (action.type) {
     case ADD_PAGE:
       return {
-        pages: [
-          ...state.pages,
-          action.payload,
-        ],
+        pages: [...state.pages, action.page],
       };
     case DELETE_PAGE:
       return {
-        pages: state.pages.filter(page => page.id !== action.payload),
+        pages: state.pages.filter((page: Page): Pages => page.id !== action.id),
       };
     case FETCH_PAGES:
       return {
-        pages: action.payload,
+        pages: action.pages,
       };
     case SAVE_PAGE:
       return {
-        pages: state.pages.map(page => (page.id === action.payload.id ? action.payload : page)),
+        pages: state.pages.map(
+          (page: Page): Pages => (page.id === action.page.id ? action.page : page),
+        ),
       };
     default:
       return state;

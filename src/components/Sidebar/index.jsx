@@ -1,11 +1,19 @@
+// @flow
+
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import MaterialIcon from 'react-google-material-icons';
+import { bindActionCreators } from 'redux';
 import { addPage, fetchPages } from '../../redux/actions/pages';
 import { Button, Container, HomeLink, PageLink as Link, LinksContailner, ListItem, Title } from './styled';
+import type { Page } from '../../types/State';
 
-class Sidebar extends Component {
+type Props = {
+  addPage: Function;
+  pages: Array<Page>;
+  fetchPages: Function;
+}
+
+class Sidebar extends Component<Props, void> {
   componentDidMount() {
     this.props.fetchPages();
   }
@@ -19,9 +27,6 @@ class Sidebar extends Component {
           {this.props.pages.map(({ id, title }) => (
             <ListItem key={id}>
               <Link to={`/pages/${id}`}>{title}</Link>
-              {/* <Link to={`/edit/${id}`}>
-                <MaterialIcon icon="edit" size={18} />
-              </Link> */}
             </ListItem>
           ))}
         </LinksContailner>
@@ -31,19 +36,13 @@ class Sidebar extends Component {
   }
 }
 
-Sidebar.propTypes = {
-  addPage: PropTypes.func.isRequired,
-  fetchPages: PropTypes.func.isRequired,
-  pages: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-};
-
 const mapStateToProps = state => ({
   pages: state.pages.pages,
 });
 
-const mapDispatchToProps = dispatch => ({
-  addPage: () => dispatch(addPage()),
-  fetchPages: () => dispatch(fetchPages()),
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+  addPage,
+  fetchPages,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

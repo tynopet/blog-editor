@@ -1,46 +1,50 @@
+// @flow
+
 import { ADD_PAGE, DELETE_PAGE, FETCH_PAGES, SAVE_PAGE } from '../constants';
 import { add, get, save, remove } from '../../api/pages';
+import type { Page } from '../../types/State';
+import type { AddAction, DeleteAction, FetchAction, SaveAction } from '../../types/Action';
 
-const pageIsAdded = payload => ({
+const pageIsAdded = (page: Page): AddAction => ({
   type: ADD_PAGE,
-  payload,
+  page,
 });
 
-const pageIsDeleted = payload => ({
+const pageIsDeleted = (id: number): DeleteAction => ({
   type: DELETE_PAGE,
-  payload,
+  id,
 });
 
-const pagesIsFetching = payload => ({
+const pagesIsFetching = (pages: Array<Page>): FetchAction => ({
   type: FETCH_PAGES,
-  payload,
+  pages,
 });
 
-const pageIsSaved = payload => ({
+const pageIsSaved = (page: Page): SaveAction => ({
   type: SAVE_PAGE,
-  payload,
+  page,
 });
 
-export const addPage = () => (dispatch) => {
+export const addPage = (): Function => (dispatch: Function): void => {
   add()
-    .then(page => dispatch(pageIsAdded(page)))
-    .catch(e => console.error(e));
+    .then((page: Page): void => dispatch(pageIsAdded(page)))
+    .catch((e: Error): void => console.error(e));
 };
 
-export const deletePage = id => (dispatch) => {
+export const deletePage = (id: number): Function => (dispatch: Function): void => {
   remove(id)
-    .then(() => dispatch(pageIsDeleted(id)))
-    .catch(e => console.error(e));
+    .then((): void => dispatch(pageIsDeleted(id)))
+    .catch((e: Error): void => console.error(e));
 };
 
-export const fetchPages = () => (dispatch) => {
+export const fetchPages = (): Function => (dispatch: Function): void => {
   get()
-    .then(pages => dispatch(pagesIsFetching(pages)))
-    .catch(e => console.error(e));
+    .then((pages: Array<Page>): void => dispatch(pagesIsFetching(pages)))
+    .catch((e: Error): void => console.error(e));
 };
 
-export const savePage = page => (dispatch) => {
+export const savePage = (page: Page): Function => (dispatch: Function): void => {
   save(page)
-    .then(() => dispatch(pageIsSaved(page)))
-    .catch(e => e);
+    .then((): void => dispatch(pageIsSaved(page)))
+    .catch((e: Error): void => console.error(e));
 };

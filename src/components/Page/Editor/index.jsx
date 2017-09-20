@@ -1,5 +1,5 @@
+// @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import MaterialIcon from 'react-google-material-icons';
@@ -9,8 +9,37 @@ import { savePage, deletePage } from '../../../redux/actions/pages';
 import { Block, Container } from '../styled';
 import { CloseButton, FloatButton, Input, OrderButton } from './styled';
 import Popup from './Popup';
+import type { Block as BlockType } from '../../../types/State';
 
-class Editor extends Component {
+type Props = {
+  id: number,
+  title: string,
+  blocks: Array<BlockType>,
+  save: Function,
+  history: any,
+  delete: Function,
+};
+
+type State = {
+  id: ?number;
+  title: string;
+  blocks: Array<BlockType>;
+  popupIsOpen: boolean;
+  editableBlock: BlockType;
+}
+
+class Editor extends Component<Props, State> {
+  handleTitleChange: Function;
+  handleSave: Function;
+  handleDelete: Function;
+  handleAddBlock: Function;
+  handleRemoveBlock: Function;
+  handleBlockClick: Function;
+  handleOrderClick: Function;
+  saveCallback: Function;
+  changeCallback: Function;
+  closeCallback: Function;
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -18,7 +47,11 @@ class Editor extends Component {
       title: '',
       blocks: [],
       popupIsOpen: false,
-      editableBlock: {},
+      editableBlock: {
+        id: 0,
+        order: 0,
+        content: '',
+      },
     };
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -36,16 +69,18 @@ class Editor extends Component {
     this.setStateFromProps(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setStateFromProps(nextProps);
   }
 
-  setStateFromProps({ id, title, blocks }) {
+  setStateFromProps({ id, title, blocks }: Props) {
     this.setState({ id, title, blocks });
   }
 
-  handleTitleChange(e) {
-    this.setState({ title: e.target.value });
+  handleTitleChange(e: Event) {
+    if (e.target instanceof HTMLInputElement) {
+      this.setState({ title: e.target.value });
+    }
   }
 
   handleSave() {
@@ -54,7 +89,7 @@ class Editor extends Component {
   }
 
   handleDelete() {
-    const confirm = window.confirm('Вы уверены?');
+    const confirm: boolean = window.confirm('Вы уверены?');
     if (confirm) {
       this.props.delete(this.state.id);
       this.props.history.push('/');
@@ -63,7 +98,7 @@ class Editor extends Component {
 
   handleAddBlock() {
     this.setState(({ blocks }) => {
-      const id = blocks.length
+      const id: number = blocks.length
         ? blocks[blocks.length - 1].id + 1
         : 0;
       return {
@@ -76,40 +111,43 @@ class Editor extends Component {
     });
   }
 
-  handleRemoveBlock(e, id) {
+  handleRemoveBlock(e: Event, id: number) {
     e.stopPropagation();
-    const confirm = window.confirm('Вы уверены?');
+    const confirm: boolean = window.confirm('Вы уверены?');
     if (confirm) {
       this.setState(prevState =>
         ({ blocks: prevState.blocks.filter(block => block.id !== id) }));
     }
   }
 
-  handleBlockClick(id) {
-    this.setState(prevState => ({
+  handleBlockClick(id: number) {
+    this.setState((prevState: State) => ({
       popupIsOpen: true,
       editableBlock: prevState.blocks.find(block => block.id === id),
     }));
   }
 
-  handleOrderClick(e, id, isUp) {
+  handleOrderClick(e: Event, id: number, isUp: boolean) {
     e.stopPropagation();
     this.setState(({ blocks }) => {
-      const order = blocks.find(block => block.id === id).order;
+      const block: BlockType | void = blocks.find((b: BlockType): boolean => b.id === id);
+      const order: number = block ? block.order : 0;
       if ((isUp && order === 0) || (!isUp && order === blocks.length - 1)) {
         return {};
       }
-      const swappedOrder = isUp ? order - 1 : order + 1;
-      const swappedBlockId = blocks.find(block => block.order === swappedOrder).id;
+      const swappedOrder: number = isUp ? order - 1 : order + 1;
+      const swappedBlock: BlockType | void =
+        blocks.find((b: BlockType): boolean => b.order === swappedOrder);
+      const swappedBlockId: number = swappedBlock ? swappedBlock.id : 0;
       return {
-        blocks: blocks.map((block) => {
-          switch (block.id) {
+        blocks: blocks.map((b: BlockType): BlockType => {
+          switch (b.id) {
             case id:
-              return { ...block, order: swappedOrder };
+              return { ...b, order: swappedOrder };
             case swappedBlockId:
-              return { ...block, order };
+              return { ...b, order };
             default:
-              return block;
+              return b;
           }
         }),
       };
@@ -123,21 +161,25 @@ class Editor extends Component {
           ? { ...block, content: prevState.editableBlock.content }
           : block)),
       popupIsOpen: false,
-      editableBlock: {},
+      editableBlock: {
+        id: 0,
+        order: 0,
+        content: '',
+      },
     }));
   }
 
-  changeCallback(value) {
+  changeCallback(value: string) {
     this.setState(prevState =>
       ({ editableBlock: { ...prevState.editableBlock, content: value } }));
   }
 
   closeCallback() {
-    const result = window.confirm('Сохранить изменения?');
+    const result: boolean = window.confirm('Сохранить изменения?');
     if (result) {
       this.saveCallback();
     } else {
-      this.setState({ editableBlock: {}, popupIsOpen: false });
+      this.setState({ editableBlock: { id: 0, order: 0, content: '' }, popupIsOpen: false });
     }
   }
 
@@ -189,15 +231,6 @@ class Editor extends Component {
     );
   }
 }
-
-Editor.propTypes = {
-  // id: PropTypes.number.isRequired,
-  // title: PropTypes.string.isRequired,
-  // blocks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  save: PropTypes.func.isRequired,
-  history: PropTypes.shape().isRequired,
-  delete: PropTypes.func.isRequired,
-};
 
 const mapStateToProps = (state, { match }) => {
   const page = state.pages.pages.find(({ id }) => id === parseInt(match.params.id, 10));

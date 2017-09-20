@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { Container, Logo } from './styled';
 import logo from './logo.svg';

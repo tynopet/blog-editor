@@ -7,7 +7,8 @@ const defaultState = {
   pages: [],
 };
 
-const pages = (state: Pages = defaultState, action: Action): Pages => {
+// fix action type
+const pages = (state: Pages = defaultState, action: any): Pages => {
   switch (action.type) {
     case ADD_PAGE:
       return {

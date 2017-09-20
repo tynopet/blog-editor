@@ -4,14 +4,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addPage, fetchPages } from '../../redux/actions/pages';
-import { Button, Container, HomeLink, PageLink as Link, LinksContailner, ListItem, Title } from './styled';
-import type { Page } from '../../types/State';
+import {
+  Button,
+  Container,
+  HomeLink,
+  PageLink as Link,
+  LinksContailner,
+  ListItem,
+  Title,
+} from './styled';
+import type { Page, Pages } from '../../types/State';
 
 type Props = {
-  addPage: Function;
-  pages: Array<Page>;
-  fetchPages: Function;
-}
+  addPage: Function,
+  pages: Array<Page>,
+  fetchPages: Function,
+};
 
 class Sidebar extends Component<Props, void> {
   componentDidMount() {
@@ -40,9 +48,13 @@ const mapStateToProps = state => ({
   pages: state.pages.pages,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  addPage,
-  fetchPages,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      addPage,
+      fetchPages,
+    },
+    dispatch,
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

@@ -13,5 +13,5 @@ export type Page = {
 };
 
 export type Pages = {
-  pages: Array<Pages>,
+  pages: Array<Page>,
 };

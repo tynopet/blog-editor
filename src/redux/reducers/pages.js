@@ -15,7 +15,7 @@ const pages = (state: Pages = defaultState, action: Action): Pages => {
       };
     case DELETE_PAGE:
       return {
-        pages: state.pages.filter((page: Page): Pages => page.id !== action.id),
+        pages: state.pages.filter((page: Page): boolean => page.id !== action.id),
       };
     case FETCH_PAGES:
       return {
@@ -24,7 +24,7 @@ const pages = (state: Pages = defaultState, action: Action): Pages => {
     case SAVE_PAGE:
       return {
         pages: state.pages.map(
-          (page: Page): Pages => (page.id === action.page.id ? action.page : page),
+          (page: Page): Page => (page.id === action.page.id ? action.page : page),
         ),
       };
     default:

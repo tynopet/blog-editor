@@ -1,7 +1,7 @@
 // @flow
 import { ADD_PAGE, DELETE_PAGE, FETCH_PAGES, SAVE_PAGE } from '../constants';
 import type { Page, Pages } from '../../types/State';
-import type { Action } from '../../types/Action';
+// import type { Action } from '../../types/Action';
 
 const defaultState = {
   pages: [],

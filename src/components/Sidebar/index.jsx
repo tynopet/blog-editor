@@ -13,7 +13,7 @@ import {
   ListItem,
   Title,
 } from './styled';
-import type { Page, Pages } from '../../types/State';
+import type { Page } from '../../types/State';
 
 type Props = {
   addPage: Function,
